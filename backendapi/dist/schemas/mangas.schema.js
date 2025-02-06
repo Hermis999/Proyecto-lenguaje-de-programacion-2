@@ -25,7 +25,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({
         required: true,
-        min: 0,
+        min: 0
     }),
     __metadata("design:type", Number)
 ], manga.prototype, "price", void 0);

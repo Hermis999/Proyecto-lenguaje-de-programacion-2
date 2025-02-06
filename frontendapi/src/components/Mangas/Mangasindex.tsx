@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { deleteMangaRequest, getMangaRequest } from "../../api/apiMangas"
+import { deleteMangaRequest, updateMangaRequest, getMangaRequest } from "../../api/apiMangas"
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 function MangasIndex() {
@@ -24,9 +24,40 @@ function MangasIndex() {
         fetchMangas();
     }, [updateList])
 
-const handleEdit = (id) => {
-    console.log (`Editar Manga con ID: ${id}`);
-}
+    const handleEdit = async (id, e) => {
+        e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    
+        try {
+            const form = e.target;
+            const newTitle = form.title.value;
+            const newPrice = Number(form.price.value);
+            const newStock = Number(form.stock.value);
+            const newDescription = form.description.value;
+    
+            const updatedManga = { title: newTitle, price: newPrice, stock: newStock, description: newDescription };
+    
+            // Usar updateMangaRequest para enviar la solicitud PUT
+            const responseUpdate = await updateMangaRequest(id, updatedManga);
+    
+            if (responseUpdate.ok) {
+                // Actualizar el estado local
+                setMangas(mangas.map((m) => (m._id === id ? { ...m, ...updatedManga } : m)));
+                setUpdateList(true);
+    
+                // Cerrar el modal
+                const modal = document.getElementById(`modal-edit-${id}`);
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+            } else {
+                console.error("Error al actualizar el Manga");
+                const errorData = await responseUpdate.json();
+                console.error(errorData);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 const handleDelete = async (id) => {
     try {
@@ -87,55 +118,56 @@ const handleDelete = async (id) => {
                                                 Editar Manga
                                             </h3>
                                             <div className="mt-2">
-                                                <form action={`/mangas/${manga._id}`} method="POST">
-                                                    <div className="space-y-6">
-                                                        <div className="sm:col-span-6">
-                                                            <label htmlFor="title" className="block text-sm font-medium text-black">
-                                                                Titulo
-                                                            </label>
-                                                            <div className="mt-1">
-                                                                <input type="text" name="title" id="title" defaultValue={manga.title} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-6">
-                                                            <label htmlFor="price" className="block text-sm font-medium text-black">
-                                                                Precio
-                                                            </label>
-                                                            <div className="mt-1">
-                                                                <input type="number" name="price" id="price" defaultValue={manga.price} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-6">
-                                                            <label htmlFor="stock" className="block text-sm font-medium text-black">
-                                                                Stock
-                                                            </label>
-                                                            <div className="mt-1">
-                                                                <input type="number" name="stock" id="stock" defaultValue={manga.stock} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-6">
-                                                            <label htmlFor="description" className="block text-sm font-medium text-black">
-                                                                Descripcion
-                                                            </label>
-                                                            <div className="mt-1">
-                                                                <textarea id="description" name="description" defaultValue={manga.description} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-                                                            </div>
+                                            <form onSubmit={(e) => handleEdit(manga._id, e)}>
+                                                <div className="space-y-6">
+                                                    <div className="sm:col-span-6">
+                                                        <label htmlFor="title" className="block text-sm font-medium text-black">
+                                                            Titulo
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <input type="text" name="title" id="title" defaultValue={manga.title} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black-300 rounded-md text-black" />
                                                         </div>
                                                     </div>
-                                                    <div className="mt-5 sm:mt-6 space-x-4">
-                                                        <button type="submit" className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
-                                                            Editar
-                                                        </button>
-                                                        <button type="button" className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm" onClick={() => {
-                                                            const modal = document.getElementById(`modal-edit-${manga._id}`);
-                                                            if (modal) {
-                                                                modal.classList.add('hidden');
-                                                            }
-                                                        }}>
-                                                            Cancelar
-                                                        </button>
+                                                    <div className="sm:col-span-6">
+                                                        <label htmlFor="price" className="block text-sm font-medium text-black">
+                                                            Precio
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <input type="number" name="price" id="price" defaultValue={manga.price} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                        </div>
                                                     </div>
-                                                </form>
+                                                    <div className="sm:col-span-6">
+                                                        <label htmlFor="stock" className="block text-sm font-medium text-black">
+                                                            Stock
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <input type="number" name="stock" id="stock" defaultValue={manga.stock} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="sm:col-span-6">
+                                                        <label htmlFor="description" className="block text-sm font-medium text-black">
+                                                            Descripcion
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <textarea id="description" name="description" defaultValue={manga.description} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-5 sm:mt-6 space-x-4">
+                                                    <button type="submit" className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                                                        Actualizar
+                                                    </button>
+                                                    <button type="button" className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm" 
+                                                    onClick={() => {
+                                                        const modal = document.getElementById(`modal-edit-${manga._id}`);
+                                                        if (modal) {
+                                                            modal.classList.add('hidden');
+                                                        }
+                                                    }}>
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>

@@ -5,6 +5,7 @@ const NavbarApp = () => {
   const [menuItems] = useState([
     { name: "Inicio", link: "/inicio" },
     { name: "Productos", link: "/productos" },
+    { name: "Nosotros", link: "/nosotros" },
     { name: "Contacto", link: "/contacto" },
   ]);
 

@@ -12,19 +12,31 @@ function MangaForm() {
     });
     
 
-    const Change = (
-        e:ChangeEvent<HTMLInputElement| HTMLTextAreaElement> 
-    ) => {setManga({... manga, [e.target.name]: e.target.value });
-        
+    const Change = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+    
+        // Convertir price y stock a números si es necesario
+        const updatedValue = (name === "price" || name === "stock") ? Number(value) : value;
+    
+        setManga({ ...manga, [name]: updatedValue });
     };
 
-    const submitForm = async (e: FormEvent<HTMLFormElement>) =>{
+    const submitForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(manga);
-        const res = await(createMangaRequest(manga));
+    
+        // Convertir price y stock a números
+        const mangaData = {
+            ...manga,
+            price: Number(manga.price),
+            stock: Number(manga.stock),
+        };
+    
+        console.log(mangaData); // Verifica que los valores sean números
+    
+        const res = await createMangaRequest(mangaData);
         const data = await res.json();
         console.log(data);
-    }
+    };
 
     return (
 
@@ -40,7 +52,8 @@ function MangaForm() {
                 <input type="number" name="price" 
                 className="border-2 border-grey-700 p-2 
                 rounded-lg bg-zinc-800 block w-full my-2" 
-                placeholder="Price of Manga" onChange={Change}/>
+                placeholder="Price of Manga" 
+                onChange={Change}/>
 
                 <input type="number" name="stock" 
                 className="border-2 border-grey-700 p-2 
@@ -59,12 +72,17 @@ function MangaForm() {
                     />
                     <span>Executed</span>
                 </label>
-
                 <button 
                     className="bg-indigo-500 hover:bg-indigo-700 px-3 block py-2 w-full"
-                    onClick={submitForm}
+                    onClick={() => window.history.back()}
                     >
                         Save
+                </button>
+                <button 
+                    className="bg-red-500 hover:bg-red-700 px-3 block py-2 w-full my-2"
+                    onClick={() => window.history.back()}
+                    >
+                        Cancel
                 </button>
             </form>
             </div>

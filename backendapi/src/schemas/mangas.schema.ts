@@ -13,7 +13,7 @@ export class manga {
 
     @Prop({
         required: true,
-        min: 0,
+        min: 0
     })
     price: number;
     

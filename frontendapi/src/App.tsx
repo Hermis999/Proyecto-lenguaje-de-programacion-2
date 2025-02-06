@@ -6,6 +6,7 @@ import FooterApp from "./components/Layout/FooterApp";
 import NavbarApp from "./components/Layout/NavbarApp";
 import Contacto from "./components/Mangas/Contacto";
 import Bienvenida from "./pages/Bienvenida";
+import Nosotros from "./pages/Nosotros";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/productos" element={<Mangasindex />} />
           <Route path="/productos/nuevo" element={<MangaForm />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/nosotros" element={<Nosotros />} />
         </Routes>
 
       </main>
