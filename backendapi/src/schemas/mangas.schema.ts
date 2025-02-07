@@ -32,7 +32,9 @@ export class manga {
     })
     description: string;
 
-    @Prop({ default: false})
+    @Prop({
+        
+    })
     status: boolean;
 }
 export const mangaSchema = SchemaFactory.createForClass(manga)

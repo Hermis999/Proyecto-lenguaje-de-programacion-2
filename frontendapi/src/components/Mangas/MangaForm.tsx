@@ -25,18 +25,23 @@ function MangaForm() {
     const submitForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     
-        // Convertir price y stock a números
         const mangaData = {
             ...manga,
             price: Number(manga.price),
             stock: Number(manga.stock),
+            status: manga.status === true, // Asegurar que sea booleano
         };
     
-        console.log(mangaData); // Verifica que los valores sean números
+        console.log("Datos a enviar:", mangaData); // Verifica que los valores sean correctos
     
         const res = await createMangaRequest(mangaData);
         const data = await res.json();
-        console.log(data);
+        console.log("Respuesta del servidor:", data);
+    
+        // Redirigir después de enviar el formulario
+        if (res.ok) {
+            window.history.back();
+        }
     };
 
     return (
@@ -77,14 +82,14 @@ function MangaForm() {
                     className="border-2 border-grey-700 p-2 rounded-lg bg-zinc-800 block w-full my-2"
                     onChange={(e) => setManga({ ...manga, status: e.target.value === "true" })}
                 >
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
+                    <option value="true" selected={manga.status ? true : false}>Activo</option>
+                    <option value="false" selected={manga.status ? false : true}>Inactivo</option>
                 </select>
                 <button 
+                    type="submit" // Asegúrate de que sea type="submit"
                     className="bg-indigo-500 hover:bg-indigo-700 px-3 block py-2 w-full"
-                    onClick={() => window.history.back()}
-                    >
-                        Save
+                >
+                    Save
                 </button>
                 <button 
                     className="bg-red-500 hover:bg-red-700 px-3 block py-2 w-full my-2"

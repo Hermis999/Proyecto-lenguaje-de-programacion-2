@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:type", String)
 ], manga.prototype, "description", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ default: false }),
+    (0, mongoose_1.Prop)({}),
     __metadata("design:type", Boolean)
 ], manga.prototype, "status", void 0);
 exports.manga = manga = __decorate([

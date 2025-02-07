@@ -17,7 +17,7 @@ function App() {
         className="relative h-screen flex items-center justify-center text-white bg-cover bg-center"
         style={{ backgroundImage: `url(${ilu})` }}
       >
-        <div className="relative z-10 w-full mx-8">
+        <div className="relative z-10 w-full mx-8 flex items-center justify-center">
           <Routes>
             <Route path="/inicio" element={<Bienvenida />} />
             <Route path="/productos" element={<Mangasindex />} />
