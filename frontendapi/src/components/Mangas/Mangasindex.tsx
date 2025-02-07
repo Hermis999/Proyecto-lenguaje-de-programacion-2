@@ -34,7 +34,7 @@ function MangasIndex() {
             const newPrice = Number(form.price.value);
             const newStock = Number(form.stock.value);
             const newDescription = form.description.value;
-            const newStatus = form.status.checked ? true : false;
+            const newStatus = form.status.value === "true"; // Convertir a booleano
             
     
             const updatedManga = {  img: newImage, title: newTitle, price: newPrice, stock: newStock, description: newDescription, status: newStatus};
@@ -91,12 +91,14 @@ const handleDelete = async (id) => {
                     className="bg-gray-800 p-4 rounded-2xl shadow-lg relative"
                     >
                     <img src={manga.img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX5R-jYIfuYoocqeVytxMEviYYrR1obxFd6Q&s"} 
-                    alt="Imagen del manga" className="w-full h-68 object-cover rounded-t-2xl" />
+                    alt="Imagen del manga" className="w-full h-68 object-cover rounded-t-2xl bg-contain hover:scale-105 transition duration-300" />
                     <h3 className="text-3xl py-3 font-semibold">{manga.title}</h3>
                     <p className="text-yellow-400">Precio: {manga.price}</p>
                     <p className="text-yellow-400">Stock: {manga.stock}</p>
                     <p className="text-gray-400">Descripcion: {manga.description || "Sin descripción"}</p>
-                    <p className="text-gray-400">Estado: {manga.status ? "Activo" : "Inactivo"}</p>
+                    <p className={manga.status ? "text-green-400" : "text-red-400"}>
+                        Estado: {manga.status ? "Activo" : "Inactivo"}
+                    </p>
 
                     <div className="flex justify-end space-x-2 mt-4">
                         <button
@@ -108,7 +110,7 @@ const handleDelete = async (id) => {
                             }
                         }}
                         >
-                            <PencilIcon className="h-5 w-5 mr-1" />
+                            <PencilIcon className="h-5 w-5 mr-1 hover:scale-105 transition duration-300" />
                             Editar
                         </button>
 
@@ -238,7 +240,7 @@ const handleDelete = async (id) => {
                         className="flex items-center px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-500"
                         onClick={() => handleDelete(manga._id)}
                         >
-                                <TrashIcon className="h-5 w-5 mr-1" />
+                                <TrashIcon className="h-7 w-7 mr-1 hover:scale-125 transition duration-300" />
                                 Eliminar
                         </button>
                     </div>
