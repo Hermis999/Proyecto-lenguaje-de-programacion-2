@@ -29,12 +29,15 @@ function MangasIndex() {
     
         try {
             const form = e.target;
+            const newImage = form.img.value;
             const newTitle = form.title.value;
             const newPrice = Number(form.price.value);
             const newStock = Number(form.stock.value);
             const newDescription = form.description.value;
+            const newStatus = form.status.checked ? true : false;
+            
     
-            const updatedManga = { title: newTitle, price: newPrice, stock: newStock, description: newDescription };
+            const updatedManga = {  img: newImage, title: newTitle, price: newPrice, stock: newStock, description: newDescription, status: newStatus};
     
             // Usar updateMangaRequest para enviar la solicitud PUT
             const responseUpdate = await updateMangaRequest(id, updatedManga);
@@ -80,17 +83,21 @@ const handleDelete = async (id) => {
                 </a>               
             </div>
             {error && <p className="text-red-500">{error}</p>}
-            <div className="mt-2 px-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[75vh] overflow-y-auto">
+            <div className="mt-2 px-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-9 max-h-[80vh] overflow-y-auto">
                 {mangas.length > 0 ? (
                 mangas.map((manga) => (
                     <div
                     key={manga._id}
                     className="bg-gray-800 p-4 rounded-2xl shadow-lg relative"
                     >
+                    <img src={manga.img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX5R-jYIfuYoocqeVytxMEviYYrR1obxFd6Q&s"} 
+                    alt="Imagen del manga" className="w-full h-68 object-cover rounded-t-2xl" />
                     <h3 className="text-3xl py-3 font-semibold">{manga.title}</h3>
                     <p className="text-yellow-400">Precio: {manga.price}</p>
                     <p className="text-yellow-400">Stock: {manga.stock}</p>
                     <p className="text-gray-400">Descripcion: {manga.description || "Sin descripción"}</p>
+                    <p className="text-gray-400">Estado: {manga.status ? "Activo" : "Inactivo"}</p>
+
                     <div className="flex justify-end space-x-2 mt-4">
                         <button
                         className="flex items-center px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500"
@@ -121,11 +128,31 @@ const handleDelete = async (id) => {
                                             <form onSubmit={(e) => handleEdit(manga._id, e)}>
                                                 <div className="space-y-6">
                                                     <div className="sm:col-span-6">
+                                                        <label htmlFor="img" className="block text-sm font-medium text-black">
+                                                            Imagen
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <input
+                                                                type="text"
+                                                                name="img"
+                                                                id="img"
+                                                                defaultValue={manga.img}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black-300 rounded-md text-black"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="sm:col-span-6">
                                                         <label htmlFor="title" className="block text-sm font-medium text-black">
                                                             Titulo
                                                         </label>
                                                         <div className="mt-1">
-                                                            <input type="text" name="title" id="title" defaultValue={manga.title} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black-300 rounded-md text-black" />
+                                                            <input
+                                                                type="text"
+                                                                name="title"
+                                                                id="title"
+                                                                defaultValue={manga.title}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black-300 rounded-md text-black"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="sm:col-span-6">
@@ -133,7 +160,13 @@ const handleDelete = async (id) => {
                                                             Precio
                                                         </label>
                                                         <div className="mt-1">
-                                                            <input type="number" name="price" id="price" defaultValue={manga.price} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                            <input
+                                                                type="number"
+                                                                name="price"
+                                                                id="price"
+                                                                defaultValue={manga.price}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="sm:col-span-6">
@@ -141,7 +174,13 @@ const handleDelete = async (id) => {
                                                             Stock
                                                         </label>
                                                         <div className="mt-1">
-                                                            <input type="number" name="stock" id="stock" defaultValue={manga.stock} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                            <input
+                                                                type="number"
+                                                                name="stock"
+                                                                id="stock"
+                                                                defaultValue={manga.stock}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="sm:col-span-6">
@@ -149,7 +188,28 @@ const handleDelete = async (id) => {
                                                             Descripcion
                                                         </label>
                                                         <div className="mt-1">
-                                                            <textarea id="description" name="description" defaultValue={manga.description} className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black" />
+                                                            <textarea
+                                                                id="description"
+                                                                name="description"
+                                                                defaultValue={manga.description}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="sm:col-span-6">
+                                                        <label htmlFor="status" className="block text-sm font-medium text-black">
+                                                            Estado
+                                                        </label>
+                                                        <div className="mt-1">
+                                                            <select
+                                                                id="status"
+                                                                name="status"
+                                                                defaultValue={manga.status ? "true" : "false"}
+                                                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-black"
+                                                            >
+                                                                <option value="true" selected={manga.status ? true : false}>Activo</option>
+                                                                <option value="false" selected={manga.status ? false : true}>Inactivo</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>

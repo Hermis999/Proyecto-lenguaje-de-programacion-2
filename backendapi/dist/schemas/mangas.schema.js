@@ -16,6 +16,12 @@ let manga = class manga {
 exports.manga = manga;
 __decorate([
     (0, mongoose_1.Prop)({
+        trim: true
+    }),
+    __metadata("design:type", String)
+], manga.prototype, "img", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({
         unique: true,
         required: true,
         trim: true

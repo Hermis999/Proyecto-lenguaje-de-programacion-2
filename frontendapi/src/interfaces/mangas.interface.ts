@@ -1,4 +1,5 @@
 export interface Manga {
+    img?: string;
     title: string;
     price: number;
     stock: number;

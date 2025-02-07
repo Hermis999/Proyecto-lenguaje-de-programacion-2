@@ -3,9 +3,12 @@ import { IsString, IsBoolean, IsOptional, IsNotEmpty, IsNumber } from "class-val
 
 export class createMangaDto{
     @IsString()
+    @IsOptional()
+    img: string;
+
+    @IsString()
     @IsNotEmpty()
     title: string;
-
 
     @IsNumber()
     @IsNotEmpty()

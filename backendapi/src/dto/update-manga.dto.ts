@@ -3,6 +3,10 @@ import { IsString, IsBoolean, IsOptional, IsNumber } from "class-validator";
 export class updateMangaDto{
     @IsString()
     @IsOptional()
+    img: string;
+
+    @IsString()
+    @IsOptional()
     title: string;
 
     @IsNumber()

@@ -1,4 +1,5 @@
 export declare class manga {
+    img: string;
     title: string;
     price: number;
     stock: number;

@@ -5,6 +5,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 })
 export class manga {
     @Prop({
+        trim: true
+    })
+    img: string;
+    
+    @Prop({
         unique: true,
         required: true,
         trim: true      // trim Retira los espacios del inicio y el

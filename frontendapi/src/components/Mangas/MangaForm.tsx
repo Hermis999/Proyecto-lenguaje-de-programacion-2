@@ -4,6 +4,7 @@ import { createMangaRequest } from "../../api/apiMangas";
 function MangaForm() {
 
     const [manga, setManga] = useState({
+        img: '',
         title: '',
         price: 0,
         stock: 0,
@@ -43,35 +44,42 @@ function MangaForm() {
         <div className='bg-gray-950 p-4 w-2/5'>
             <h1 className='text-center font-bold text-4xl my-2'> APP Mangas</h1>
             <form onSubmit={submitForm} action="">
+                <input type="text" name="img" 
+                className="border-2 border-grey-700 p-2 
+                rounded-lg bg-zinc-800 block w-full my-2" 
+                placeholder="Imagen del Manga"
+                onChange={Change}
+                />
                 <input type="text" name="title" 
                 className="border-2 border-grey-700 p-2 
                 rounded-lg bg-zinc-800 block w-full my-2" 
-                placeholder="Title of Manga"
+                placeholder="Titulo del Manga"
                 onChange={Change}
                 />
                 <input type="number" name="price" 
                 className="border-2 border-grey-700 p-2 
                 rounded-lg bg-zinc-800 block w-full my-2" 
-                placeholder="Price of Manga" 
+                placeholder="Precio del Manga" 
                 onChange={Change}/>
 
                 <input type="number" name="stock" 
                 className="border-2 border-grey-700 p-2 
                 rounded-lg bg-zinc-800 block w-full my-2" 
-                placeholder="stock of Manga" onChange={Change}/>
+                placeholder="Cantidad del Manga" onChange={Change}/>
 
                 <textarea name="description" rows={3} id="" 
                 className="border-2 border-grey-700 p-2 
                 rounded-lg bg-zinc-800 block w-full my-2" 
-                placeholder="Description the Manga" onChange={Change}>
+                placeholder="Descripcion del Manga" onChange={Change}>
                 </textarea>
-
-                <label htmlFor="" className="inline-flex items-center gap-x-2">
-                    <input type="checkbox" name="status" className="h-5 w-5 text-indigo-600"
-                    onChange={(e) => setManga({ ... manga, status: !manga.status})}
-                    />
-                    <span>Executed</span>
-                </label>
+                <select
+                    name="status"
+                    className="border-2 border-grey-700 p-2 rounded-lg bg-zinc-800 block w-full my-2"
+                    onChange={(e) => setManga({ ...manga, status: e.target.value === "true" })}
+                >
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
                 <button 
                     className="bg-indigo-500 hover:bg-indigo-700 px-3 block py-2 w-full"
                     onClick={() => window.history.back()}
