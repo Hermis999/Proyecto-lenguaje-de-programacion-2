@@ -80,10 +80,11 @@ function MangaForm() {
                 <select
                     name="status"
                     className="border-2 border-grey-700 p-2 rounded-lg bg-zinc-800 block w-full my-2"
+                    value={manga.status ? "true" : "false"} // Controla el valor seleccionado
                     onChange={(e) => setManga({ ...manga, status: e.target.value === "true" })}
                 >
-                    <option value="true" selected={manga.status ? true : false}>Activo</option>
-                    <option value="false" selected={manga.status ? false : true}>Inactivo</option>
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
                 </select>
                 <button 
                     type="submit" // Asegúrate de que sea type="submit"
