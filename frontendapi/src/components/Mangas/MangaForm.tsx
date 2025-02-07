@@ -9,7 +9,7 @@ function MangaForm() {
         price: 0,
         stock: 0,
         description: '',
-        status: false,
+        status: true,
     });
     
 
